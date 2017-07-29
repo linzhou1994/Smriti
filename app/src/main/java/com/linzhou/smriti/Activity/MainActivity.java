@@ -130,6 +130,7 @@ public class MainActivity extends BaseWebSocketActivity implements View.OnClickL
                 mMessageImg.setImageResource(R.mipmap.message2);
                 break;
 
+
             case 2:
                 if (mMy == null)             //如果没有显示过
                 {
