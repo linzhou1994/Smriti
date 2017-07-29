@@ -11,11 +11,11 @@ package com.linzhou.smriti.utils;
 
 public class Url {
 
-    public static final String IP ="192.168.0.151:8080/Inherit";
+    public static final String IP ="192.168.0.151:8080/SmritiWeb";
 
     public static final String BASEURL = "http://"+IP;
 
-    public static final String WEBSOCKETURL = "ws://"+IP+"/inherit";
+    public static final String WEBSOCKETURL = "ws://"+IP+"/websocket";
 
     public static final String LOGIN = BASEURL+"/login";
 }

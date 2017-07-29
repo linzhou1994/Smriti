@@ -46,6 +46,15 @@ import okhttp3.RequestBody;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
+    /**
+     * 登录成功码
+     */
+    private static final int LOGIN_SUCCESS=10001;
+    /**
+     * 登录失败码
+     */
+    private static final int LOGIN_ERROR=10000;
+
     private EditText mInputTel;
     private EditText mInputPassword;
     private AppCompatButton mBtnLogin;
@@ -121,11 +130,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             JSONObject loginjson = new JSONObject(str);
                             int result = loginjson.optInt(StaticClass.RESULT);
                             switch (result) {
-                                case 0://登录失败
+                                case LOGIN_ERROR://登录失败
                                     mBtnLogin.setEnabled(true);
                                     Toast.makeText(LoginActivity.this, "账号或密码错误！", Toast.LENGTH_SHORT).show();
                                     break;
-                                case 1://登录成功
+                                case LOGIN_SUCCESS://登录成功
                                     JSONObject resultuser = loginjson.optJSONObject(StaticClass.USER);
                                     loginsuccess(resultuser);
                                     break;
