@@ -165,6 +165,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
     }
 
+
     private void loginsuccess(JSONObject resultuser) {
         User user = new User();
         user.setProfession(resultuser.optString("profession"));
