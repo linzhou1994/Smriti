@@ -22,7 +22,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/rearch"
+            android:id="@+id/community"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -30,17 +30,17 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/im_rearch"
+                android:id="@+id/img_community"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/theme1" />
 
             <TextView
-                android:id="@+id/tv_reatch"
+                android:id="@+id/tv_community"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="名企"
+                android:text="社区"
                 android:textColor="@color/color_black"
                 android:textSize="15sp" />
 
@@ -55,7 +55,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/im_message"
+                android:id="@+id/img_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/message1" />
@@ -80,7 +80,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/im_my"
+                android:id="@+id/img_my"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/my1" />

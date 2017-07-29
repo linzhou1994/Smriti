@@ -156,6 +156,7 @@ public class OkHttp {
         getOkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                L.d(e.toString()+"-------------------------e.toString()");
                 if (okHttpListener != null) {
                     okHttpListener.error(e.toString());
                 }

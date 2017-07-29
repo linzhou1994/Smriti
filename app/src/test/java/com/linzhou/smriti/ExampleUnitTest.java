@@ -1,6 +1,8 @@
 package com.linzhou.smriti;
 
+import com.linzhou.smriti.Base.StaticClass;
 import com.linzhou.smriti.utils.OkHttp;
+import com.linzhou.smriti.utils.Url;
 
 import org.junit.Test;
 
@@ -15,7 +17,7 @@ import okhttp3.RequestBody;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        String url = "http://192.168.0.151:8080/Inherit/login.action";
+        String url = Url.LOGIN;
         //异步get-------------------------------------------------------------------------------
 //        OkHttp.asynget(url, new OkHttp.OkHttpListener() {
 //            @Override

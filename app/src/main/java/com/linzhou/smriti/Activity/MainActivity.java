@@ -4,11 +4,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.linzhou.smriti.Base.BaseWebSocketActivity;
 import com.linzhou.smriti.R;
+import com.linzhou.smriti.fragment.CommunityFragment;
+import com.linzhou.smriti.fragment.MessageFragment;
+import com.linzhou.smriti.fragment.MyFragment;
 
 import org.json.JSONObject;
 
@@ -17,22 +19,17 @@ public class MainActivity extends BaseWebSocketActivity implements View.OnClickL
     /**
      * 底部的四个布局文件
      */
-    private LinearLayout mbottom1;
-    private LinearLayout mbottom2;
-    private LinearLayout mbottom3;
-    private LinearLayout mbottom4;
-    /**
-     * 底部的四个ImageButton
-     */
-    private ImageButton mImgbtm1;
-    private ImageButton mImgbtm2;
-    private ImageButton mImgbtm3;
-    private ImageButton mImgbtm4;
+    private LinearLayout mCommunityBt;
+    private LinearLayout mMessageBt;
+    private LinearLayout mMyBt;
 
-    private Fragment mf1;
-    private Fragment mf2;
-    private Fragment mf3;
-    private Fragment mf4;
+    private ImageView mCommunityImg;
+    private ImageView mMessageImg;
+    private ImageView mMyImg;
+
+    private Fragment mCommunity;
+    private Fragment mMessage;
+    private Fragment mMy;
 
     @Override
     protected int getlayout() {
@@ -42,56 +39,56 @@ public class MainActivity extends BaseWebSocketActivity implements View.OnClickL
     @Override
     protected void initview() {
         mfindviewbyid();
-        initialization();
+
     }
+    private void mfindviewbyid() {
+        mCommunityBt = (LinearLayout) findViewById(R.id.community);
+        mMessageBt = (LinearLayout) findViewById(R.id.message);
+        mMyBt = (LinearLayout) findViewById(R.id.my);
+
+        mCommunityImg= (ImageView) findViewById(R.id.img_community);
+        mMessageImg = (ImageView) findViewById(R.id.img_message);
+        mMyImg = (ImageView) findViewById(R.id.img_my);
+
+    }
+
+
+
+
 
     @Override
     protected void initData() {
-
+        //默认第一项
+        setSelect(0);
     }
 
     @Override
     protected void setListener() {
         super.setListener();
-        mbottom1.setOnClickListener(this);
-        mbottom2.setOnClickListener(this);
-        mbottom3.setOnClickListener(this);
-        mbottom4.setOnClickListener(this);
+        mCommunityBt.setOnClickListener(this);
+        mMessageBt.setOnClickListener(this);
+        mMyBt.setOnClickListener(this);
     }
 
-    private void initialization() {
-        setSelect(0);
-    }
 
-    private void mfindviewbyid() {
-        mbottom1 = (LinearLayout) findViewById(R.id.main_map);
-        mbottom2 = (LinearLayout) findViewById(R.id.main_bottom2);
-        mbottom3 = (LinearLayout) findViewById(R.id.main_bottom3);
-        mbottom4 = (LinearLayout) findViewById(R.id.main_bottom4);
-        mImgbtm1 = (ImageButton) findViewById(R.id.main_map_img);
-        mImgbtm2 = (ImageButton) findViewById(R.id.main_bottom2_img);
-        mImgbtm3 = (ImageButton) findViewById(R.id.main_bottom3_img);
-        mImgbtm4 = (ImageButton) findViewById(R.id.main_bottom4_img);
-    }
 
 
 
     @Override
     public void onClick(View v) {
-        resetImgs();//初始化图片
+
         switch (v.getId()) {
-            case R.id.main_map:
+            case R.id.community:
                 setSelect(0);
                 //调用select方法，改变颜色显示对应fragment
                 break;
-            case R.id.main_bottom2:
+            case R.id.message:
                 setSelect(1);
+                //调用select方法，改变颜色显示对应fragment
                 break;
-            case R.id.main_bottom3:
+            case R.id.my:
                 setSelect(2);
-                break;
-            case R.id.main_bottom4:
-                setSelect(3);
+                //调用select方法，改变颜色显示对应fragment
                 break;
             default:
                 break;
@@ -100,6 +97,7 @@ public class MainActivity extends BaseWebSocketActivity implements View.OnClickL
 
 
     public void setSelect(int i) {
+        resetImgs();//初始化图片
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         // 开启Fragment事务
@@ -107,16 +105,42 @@ public class MainActivity extends BaseWebSocketActivity implements View.OnClickL
         //设置选中区域是亮的
         switch (i) {
             case 0:
-                if (mf1 == null)             //如果没有显示过
+                if (mCommunity == null)             //如果没有显示过
                 {
-                    //mf1=new MapFragment();
-                    transaction.add(R.id.id_content, mf1);
+                    mCommunity=new CommunityFragment();
+                    transaction.add(R.id.id_content, mCommunity);
                     // 往Activity中添加一个Fragment,这里添加的是MenuFragment
                 } else {
-                    transaction.show(mf1);
+                    transaction.show(mCommunity);
                     //显示之前隐藏的Fragment
                 }
-                //mImgbtm1.setImageResource(R.mipmap.dingwei2);
+                mCommunityImg.setImageResource(R.mipmap.theme2);
+                break;
+
+            case 1:
+                if (mMessage == null)             //如果没有显示过
+                {
+                    mMessage=new MessageFragment();
+                    transaction.add(R.id.id_content, mMessage);
+                    // 往Activity中添加一个Fragment,这里添加的是MenuFragment
+                } else {
+                    transaction.show(mMessage);
+                    //显示之前隐藏的Fragment
+                }
+                mMessageImg.setImageResource(R.mipmap.message2);
+                break;
+
+            case 2:
+                if (mMy == null)             //如果没有显示过
+                {
+                    mMy=new MyFragment();
+                    transaction.add(R.id.id_content, mMy);
+                    // 往Activity中添加一个Fragment,这里添加的是MenuFragment
+                } else {
+                    transaction.show(mMy);
+                    //显示之前隐藏的Fragment
+                }
+                mMyImg.setImageResource(R.mipmap.my2);
                 break;
 
             default:
@@ -128,24 +152,22 @@ public class MainActivity extends BaseWebSocketActivity implements View.OnClickL
 
 
     private void hideFragment(FragmentTransaction transaction) {
-        if (mf1 != null) {
-            transaction.hide(mf1);//隐藏这个Fragment
+        if (mCommunity != null) {
+            transaction.hide(mCommunity);//隐藏这个Fragment
         }
-        if (mf2 != null) {
-            transaction.hide(mf2);
+        if (mMessage != null) {
+            transaction.hide(mMessage);
         }
-        if (mf3 != null) {
-            transaction.remove(mf3);
+        if (mMy != null) {
+            transaction.hide(mMy);
         }
-        if (mf4 != null) {
-            transaction.hide(mf4);
-        }
-
     }
 
 
     private void resetImgs() {
-        // mImgbtm1.setImageResource(R.mipmap.dingwei1);
+        mCommunityImg.setImageResource(R.mipmap.theme1);
+        mMessageImg.setImageResource(R.mipmap.message1);
+        mMyImg.setImageResource(R.mipmap.my1);
 
     }
 

@@ -11,7 +11,7 @@ package com.linzhou.smriti.Base;
 
 public class StaticClass {
     public static final String RESULT = "result";
-    public static final String USER = "user";
+    public static final String CONTENT="content";
     public static final String TYPE = "type";
     public static final String RESULTTYPE="resulttype";
 }

@@ -135,7 +135,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     Toast.makeText(LoginActivity.this, "账号或密码错误！", Toast.LENGTH_SHORT).show();
                                     break;
                                 case LOGIN_SUCCESS://登录成功
-                                    JSONObject resultuser = loginjson.optJSONObject(StaticClass.USER);
+                                    JSONObject resultuser = loginjson.optJSONObject(StaticClass.CONTENT);
                                     loginsuccess(resultuser);
                                     break;
                                 default:
@@ -165,24 +165,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
     }
 
-
     private void loginsuccess(JSONObject resultuser) {
         User user = new User();
-        user.setProfession(resultuser.optString("profession"));
+        user.setProfession(resultuser.optJSONObject("profession").toString());
         user.setTel(mInputTel.getText().toString().trim());
         user.setUsername(resultuser.optString("username"));
         user.setSex(resultuser.optInt("sex"));
         user.setSignature(resultuser.optString("signature"));
         user.setHead(resultuser.optString("head"));
         user.setEmail(resultuser.optString("email"));
-        user.setId(resultuser.optInt("id"));
+        user.setId(resultuser.optInt("userid"));
         AppConfig.mUser = user;
         L.d(AppConfig.mUser.getId()+"  AppConfig.mUser.getId");
         mLoginDialog.dismiss();
         Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
         L.d(user.toString());
         MyWebSocket.getWebSocket().openWebsocket();
-
 
         startActivity(MainActivity.class);
         finish();
