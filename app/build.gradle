@@ -45,4 +45,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     //CircleImageView
     compile 'de.hdodenhof:circleimageview:2.1.0'
+
+    //Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile files('libs/autobahn-0.5.0.jar')
 }

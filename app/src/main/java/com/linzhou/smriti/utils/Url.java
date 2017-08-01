@@ -18,4 +18,6 @@ public class Url {
     public static final String WEBSOCKETURL = "ws://"+IP+"/websocket";
 
     public static final String LOGIN = BASEURL+"/login";
+
+    public static final String HTTP_USER_HEAD_URL = "http://" + IP;
 }

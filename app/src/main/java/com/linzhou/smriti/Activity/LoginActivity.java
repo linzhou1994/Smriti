@@ -15,21 +15,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.linzhou.smriti.Base.AppConfig;
 import com.linzhou.smriti.Base.BaseActivity;
+import com.linzhou.smriti.Base.JsonToClass;
 import com.linzhou.smriti.Base.StaticClass;
-import com.linzhou.smriti.Data.User;
 import com.linzhou.smriti.R;
 import com.linzhou.smriti.View.CustomDialog;
 import com.linzhou.smriti.utils.L;
 import com.linzhou.smriti.utils.OkHttp;
 import com.linzhou.smriti.utils.Url;
 import com.linzhou.smriti.websocekt.MyWebSocket;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -166,20 +163,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void loginsuccess(JSONObject resultuser) {
-        User user = new User();
-        user.setProfession(resultuser.optJSONObject("profession").toString());
-        user.setTel(mInputTel.getText().toString().trim());
-        user.setUsername(resultuser.optString("username"));
-        user.setSex(resultuser.optInt("sex"));
-        user.setSignature(resultuser.optString("signature"));
-        user.setHead(resultuser.optString("head"));
-        user.setEmail(resultuser.optString("email"));
-        user.setId(resultuser.optInt("userid"));
-        AppConfig.mUser = user;
+        AppConfig.mUser = JsonToClass.JsonToUser(resultuser);
         L.d(AppConfig.mUser.getId()+"  AppConfig.mUser.getId");
         mLoginDialog.dismiss();
         Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
-        L.d(user.toString());
+        L.d(AppConfig.mUser.toString());
         MyWebSocket.getWebSocket().openWebsocket();
 
         startActivity(MainActivity.class);

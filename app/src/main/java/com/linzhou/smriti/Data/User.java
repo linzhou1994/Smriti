@@ -12,7 +12,7 @@ package com.linzhou.smriti.Data;
 public class User {
 
     private int id;
-    private String profession;
+    private Profession profession;
     private String tel;
     private String username;
     private Integer sex;
@@ -28,11 +28,11 @@ public class User {
         this.id = id;
     }
 
-    public String getProfession() {
+    public Profession getProfession() {
         return profession;
     }
 
-    public void setProfession(String profession) {
+    public void setProfession(Profession profession) {
         this.profession = profession;
     }
 
@@ -88,7 +88,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "profession='" + profession + '\'' +
+                "profession='" + profession.toString() + '\'' +
                 ", tel='" + tel + '\'' +
                 ", username='" + username + '\'' +
                 ", sex=" + sex +
