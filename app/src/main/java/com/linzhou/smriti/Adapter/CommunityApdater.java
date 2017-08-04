@@ -8,14 +8,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.linzhou.smriti.Base.MouldAdapter;
 import com.linzhou.smriti.Base.StaticClass;
 import com.linzhou.smriti.Data.Theme;
 import com.linzhou.smriti.R;
+import com.linzhou.smriti.utils.L;
 import com.linzhou.smriti.utils.PicassoUtils;
 import com.linzhou.smriti.utils.Url;
 import com.linzhou.smriti.utils.UtilTools;
 
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -29,69 +32,28 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 
-public class CommunityApdater extends BaseAdapter {
+public class CommunityApdater extends MouldAdapter {
 
-    private List<Theme> mList;
-    private Context mContext;
-    private LayoutInflater inflater;
-
-    public CommunityApdater(Context context ,List<Theme> list){
-        this.mContext=context;
-        this.mList=list;
-        inflater= (LayoutInflater) mContext.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+    public CommunityApdater(Context context, List list) {
+        super(context, list);
     }
 
-    public void setmList(List<Theme> list){
-        this.mList=list;
-        notifyDataSetChanged();
-    }
-
-
-
-
-    @Override
-    public int getCount() {
-        return mList.size();
+    public CommunityApdater(Context context, List list, boolean onTouch) {
+        super(context, list, onTouch);
     }
 
     @Override
-    public Object getItem(int position) {
-        return mList.get(position);
+    protected int setLayout() {
+        return R.layout.apdater_community;
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    protected MouldAdapter.ViewHolder setViewHolder(View convertView) {
+        return new CommunityViewHolder(convertView,mList,mContext);
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder mViewHolder=null;
-        Theme mTheme = mList.get(position);
-        if (convertView==null){
-            convertView=inflater.inflate(R.layout.apdater_community,null);
-            mViewHolder = new ViewHolder(convertView);
-        }else {
-            mViewHolder= (ViewHolder) convertView.getTag();
-        }
 
-//        if (!TextUtils.isEmpty(mTheme.getUser().getHead()))
-//            PicassoUtils.loadImageViewSize(mContext
-//                    , Url.HTTP_USER_HEAD_URL+mTheme.getUser().getHead()
-//                    , 25, 25, mViewHolder.eimage);
-        mViewHolder.tv_title.setText(mTheme.getTitle());
-        mViewHolder.tv_username.setText(mTheme.getUser().getUsername());
-        mViewHolder.tv_firsttime.setText(UtilTools.dateToString(mTheme.getFirsttime()));
-
-        mViewHolder.tv_content.setText(mTheme.getContent());
-        mViewHolder.tv_replienum.setText(mTheme.getReplienum()+"");
-
-        convertView.setTag(mViewHolder);
-
-        return convertView;
-    }
-
-    class ViewHolder{
+    static class CommunityViewHolder extends MouldAdapter.ViewHolder {
         public CircleImageView eimage;//用户头像
         public TextView tv_username;//用户名称
         public TextView tv_firsttime;//发布时间
@@ -99,20 +61,42 @@ public class CommunityApdater extends BaseAdapter {
         public TextView tv_content;//内容
         public TextView tv_replienum;//回复数
 
+        protected List mList;
 
-        public ViewHolder(View view){
-            eimage= (CircleImageView) view.findViewById(R.id.eimage);
-            tv_username= (TextView) view.findViewById(R.id.tv_username);
-            tv_firsttime= (TextView) view.findViewById(R.id.tv_firsttime);
-            tv_title= (TextView) view.findViewById(R.id.tv_title);
-            tv_content= (TextView) view.findViewById(R.id.tv_content);
-            tv_replienum= (TextView) view.findViewById(R.id.tv_replienum);
+        protected Context mContext;
+
+
+        public CommunityViewHolder(View view ,List mList,Context mContext) {
+            eimage = (CircleImageView) view.findViewById(R.id.eimage);
+            tv_username = (TextView) view.findViewById(R.id.tv_username);
+            tv_firsttime = (TextView) view.findViewById(R.id.tv_firsttime);
+            tv_title = (TextView) view.findViewById(R.id.tv_title);
+            tv_content = (TextView) view.findViewById(R.id.tv_content);
+            tv_replienum = (TextView) view.findViewById(R.id.tv_replienum);
+
+            this.mList = mList;
+            this.mContext = mContext;
+        }
+
+        public void bandData(int position) {
+
+            Theme mTheme = (Theme) mList.get(position);
+            if (!TextUtils.isEmpty(mTheme.getUser().getHead()))
+                PicassoUtils.loadImageViewSize(mContext
+                        , Url.HTTP_USER_HEAD_URL + mTheme.getUser().getHead()
+                        , 25, 25, eimage);
+            L.d("head:        " + Url.HTTP_USER_HEAD_URL + mTheme.getUser().getHead());
+            tv_title.setText(mTheme.getTitle());
+            tv_username.setText(mTheme.getUser().getUsername());
+            if (UtilTools.getStartTime().getTime() < mTheme.getFirsttime().getTime())
+                tv_firsttime.setText(UtilTools.dateToString(mTheme.getFirsttime(),"HH:mm"));
+            else tv_firsttime.setText(UtilTools.dateToString(mTheme.getFirsttime()));
+
+            tv_content.setText(mTheme.getContent());
+            tv_replienum.setText(mTheme.getReplienum() + "");
         }
 
     }
-
-
-
 
 
 }

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.linzhou.smriti.Base.AppConfig;
 import com.linzhou.smriti.Base.BaseActivity;
-import com.linzhou.smriti.Base.JsonToClass;
+import com.linzhou.smriti.utils.JsonToClass;
 import com.linzhou.smriti.Base.StaticClass;
 import com.linzhou.smriti.R;
 import com.linzhou.smriti.View.CustomDialog;
@@ -46,11 +46,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     /**
      * 登录成功码
      */
-    private static final int LOGIN_SUCCESS=10001;
+    private static final String LOGIN_SUCCESS="Login_success";
     /**
      * 登录失败码
      */
-    private static final int LOGIN_ERROR=10000;
+    private static final String LOGIN_ERROR="Login_fail";
 
     private EditText mInputTel;
     private EditText mInputPassword;
@@ -125,7 +125,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         mLoginDialog.dismiss();
                         try {
                             JSONObject loginjson = new JSONObject(str);
-                            int result = loginjson.optInt(StaticClass.RESULT);
+                            String result = loginjson.optString(StaticClass.RESULT);
                             switch (result) {
                                 case LOGIN_ERROR://登录失败
                                     mBtnLogin.setEnabled(true);

@@ -1,18 +1,34 @@
 package com.linzhou.smriti.fragment;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.linzhou.smriti.Activity.AddThemeAvtivity;
+import com.linzhou.smriti.Activity.LoginActivity;
+import com.linzhou.smriti.Activity.ThemeSearchActivity;
 import com.linzhou.smriti.Adapter.CommunityApdater;
 import com.linzhou.smriti.Base.AppConfig;
 import com.linzhou.smriti.Base.BaseFragment;
+import com.linzhou.smriti.Base.MouldAdapter;
+import com.linzhou.smriti.Base.StaticClass;
 import com.linzhou.smriti.Data.Theme;
 import com.linzhou.smriti.Data.User;
 import com.linzhou.smriti.R;
+import com.linzhou.smriti.utils.JsonToClass;
 import com.linzhou.smriti.utils.L;
+import com.linzhou.smriti.utils.OkHttp;
+import com.linzhou.smriti.utils.Url;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,12 +43,21 @@ import java.util.List;
  */
 
 
-public class CommunityFragment extends BaseFragment {
+public class CommunityFragment extends BaseFragment implements View.OnClickListener{
+
+    /**
+     * 获取数据成功
+     */
+    private static final String THEMES_SUCCESS="GetThemes_success";
 
     private TextView tv_profession;
-    private ListView elist;
+    private ListView mListView;
     private CommunityApdater mApdater;
     private SwipeRefreshLayout mSwipeRefresh;
+    private ImageView search;
+    private ImageView addtheme;
+
+    private List<Theme> mThemes = null;
 
 
     @Override
@@ -42,40 +67,136 @@ public class CommunityFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-        tv_profession= (TextView) view.findViewById(R.id.tv_profession);
-        elist= (ListView) view.findViewById(R.id.elist);
         mSwipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.mSwipeRefresh);
 
-        tv_profession.setText(AppConfig.mUser.getProfession().getPName());
+        // 设置下拉圆圈上的颜色，蓝色、绿色、橙色、红色
+        mSwipeRefresh.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        mSwipeRefresh.setDistanceToTriggerSync(400);// 设置手指在屏幕下拉多少距离会触发下拉刷新
+        mSwipeRefresh.setSize(SwipeRefreshLayout.LARGE); // 设置圆圈的大小
 
+
+        tv_profession= (TextView) view.findViewById(R.id.tv_profession);
+        mListView= (ListView) view.findViewById(R.id.elist);
+        search = (ImageView) view.findViewById(R.id.search);
+        addtheme = (ImageView) view.findViewById(R.id.addtheme);
+
+        tv_profession.setText(AppConfig.mUser.getProfession().getPName());
+        mThemes = new ArrayList<>();
+        mApdater = new CommunityApdater(getActivity(),mThemes);
+        mListView.setAdapter(mApdater);
     }
 
     @Override
-    protected void initData() {
-        List<Theme> list = getdate();
+    protected void initData()  {
 
-        mApdater = new CommunityApdater(getActivity(),list);
-        elist.setAdapter(mApdater);
+        try {
+            getData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
     protected void setListener() {
 
+        search.setOnClickListener(this);
+        addtheme.setOnClickListener(this);
+
+        mApdater.setItemOnclick(new MouldAdapter.itemOnclick() {
+            @Override
+            public void Onclick(int i) {
+                Toast.makeText(getActivity(),"点击了："+i,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                try {
+                    getData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
-    public List<Theme> getdate() {
+    public void getData() throws IOException {
+        mSwipeRefresh.setRefreshing(true);
+
         List<Theme> date = new ArrayList<>();
-        for (int i =0;i<=9;i++){
-            Theme theme = new Theme();
-            theme.setTitle("title"+i);
-            theme.setFirsttime(new Date());
-            theme.setContent("content content content content content"+i);
-            theme.setReplienum(i);
-            User user=new User();
-            user.setUsername("username:"+i);
-            theme.setUser(user);
-            date.add(theme);
+
+
+        OkHttp.asynpost(Url.GETTHEMES, new OkHttp.OkHttpListener() {
+            @Override
+            public void success(String str) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject Themejson = new JSONObject(str);
+                            String result = Themejson.optString(StaticClass.RESULT);
+                            switch (result) {
+                                case THEMES_SUCCESS:
+                                    getThemes(Themejson.optJSONArray(StaticClass.CONTENT));
+                                    break;
+
+                                default:
+
+                                    Toast.makeText(getActivity(), "未知错误导致获取数据失败！", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void error(String str) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefresh.setRefreshing(false);
+                        Toast.makeText(getActivity(), "网络异常,获取数据失败，请重试！", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private void getThemes(JSONArray jsonArray) {
+        mThemes.clear();
+
+        for (int i =0;i<jsonArray.length();i++)
+            mThemes.add(JsonToClass.JsonToTheme(jsonArray.optJSONObject(i)));
+
+
+        mApdater.notifyDataSetChanged();
+        mSwipeRefresh.setRefreshing(false);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent;
+        switch (view.getId()){
+            case R.id.search:
+                intent= new Intent(getActivity(),ThemeSearchActivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.activity_in,R.anim.activity_out);
+                break;
+            case R.id.addtheme:
+                intent = new Intent(getActivity(),AddThemeAvtivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.activity_in,R.anim.activity_out);
+                break;
+
         }
-        return date;
     }
 }

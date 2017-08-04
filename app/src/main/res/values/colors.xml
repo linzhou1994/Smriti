@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#5D9CEC</color>
-    <color name="colorPrimaryDark">#5D9CEC</color>
+    <color name="colorPrimary">#00b3fa</color>
+    <color name="colorPrimaryDark">#00b3fa</color>
     <color name="colorAccent">#EC87C0</color>
     <color name="accent_material_light">#FFDA7C</color>
     <color name="background_material_light_1">#fafafa</color>
@@ -11,6 +11,7 @@
     <color name="listTextColor">#ff333333</color>
     <color name="listSubTextColor">#ff888888</color>
     <color name="menu_item_grey">#ffdbdbdb</color>
+
     <color name="toast_stroke_gray">#E7E7E7</color>
     <color name="time_line">#CCCCCC</color>
     <color name="black">#2F3640</color>
@@ -22,7 +23,7 @@
     <color name="green">#A0D468</color>
     <color name="gray">#FFF0F0F0</color>
     <color name="gray_deep">#c9000000</color>
-    <color name="transparent">#00000000</color>
+    <color name="transparent">#2bc7c6c6</color>
     <color name="role_right_gray">#CCD1D9</color>
     <color name="role_yellow_gray">#48CFAD</color>
     <color name="container_background">#EBEBEB</color>
@@ -33,4 +34,7 @@
     <color name="color868686">#868686</color>
 
     <color name="main_bottom">#f5f5f9</color>
+
+
+    <color name="color_search_bc">#b700d5fa</color>
 </resources>

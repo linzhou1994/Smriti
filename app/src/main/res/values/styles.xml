@@ -19,6 +19,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!--activity无标题栏透明样式-->
+    <style name="AppTheme.NoActionBarTransparent">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
     <style name="LoginButton">
         <item name="android:background">@drawable/selector_login_button</item>
         <item name="android:textColor">@color/white</item>

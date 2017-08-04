@@ -1,8 +1,10 @@
 package com.linzhou.smriti.Activity;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,6 +51,7 @@ public class MainActivity extends BaseWebSocketActivity implements View.OnClickL
         mCommunityImg= (ImageView) findViewById(R.id.img_community);
         mMessageImg = (ImageView) findViewById(R.id.img_message);
         mMyImg = (ImageView) findViewById(R.id.img_my);
+
 
     }
 
@@ -175,5 +178,22 @@ public class MainActivity extends BaseWebSocketActivity implements View.OnClickL
     @Override
     public void remessage(String resulttype,JSONObject mes) {
 
+    }
+
+    //防止按返回键将avtivity finish掉
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            MainActivity.this.startActivity(intent);
+            return false;
+        } else return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }

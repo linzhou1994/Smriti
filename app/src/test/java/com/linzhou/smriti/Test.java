@@ -1,5 +1,8 @@
 package com.linzhou.smriti;
 
+import android.view.View;
+
+import com.linzhou.smriti.Base.MouldAdapter;
 import com.linzhou.smriti.Data.Theme;
 import com.linzhou.smriti.Data.User;
 import com.linzhou.smriti.utils.L;
@@ -21,18 +24,9 @@ import okhttp3.RequestBody;
 public class Test {
     @org.junit.Test
     public void addition_isCorrect() throws Exception {
-        List<Theme> date = new ArrayList<>();
-        for (int i =0;i<=9;i++){
-            Theme theme = new Theme();
-            theme.setTitle("title"+i);
-            theme.setFirsttime(new Date());
-            theme.setContent("content content content content content"+i);
-            theme.setReplienum(i);
-            User user=new User();
-            user.setUsername("username:"+i);
-            theme.setUser(user);
-            date.add(theme);
+        String str = "asdf";
+        switch (str){
+            case "as":
         }
-        System.out.print(date.get(5).getTitle());
     }
 }
