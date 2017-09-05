@@ -9,13 +9,19 @@ package com.linzhou.smriti.utils;
  */
 
 
+import com.linzhou.smriti.Data.Firstreply;
 import com.linzhou.smriti.Data.Profession;
+import com.linzhou.smriti.Data.Secondreply;
 import com.linzhou.smriti.Data.Theme;
 import com.linzhou.smriti.Data.User;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class JsonToClass {
     /**
@@ -36,18 +42,20 @@ public class JsonToClass {
             user.setUsername(json.optString("username"));
 
 
-            user.setSex(json.optInt("sex"));
+        user.setSex(json.optInt("sex"));
 
         if (json.optString("signature") != null)
             user.setSignature(json.optString("signature"));
 
-        if (json.optString("head") != null)
+        if (json.optString("head") != null){
             user.setHead(json.optString("head"));
+            L.d("HEAD NO NULL  "+json.optString("head"));
+        }
 
         if (json.optString("email") != null)
             user.setEmail(json.optString("email"));
 
-            user.setId(json.optInt("userid"));
+        user.setId(json.optInt("userid"));
 
         return user;
     }
@@ -62,7 +70,7 @@ public class JsonToClass {
         Profession profession = new Profession();
         profession.setId(json.optInt("professionid"));
         if (json.optString("pname") != null)
-        profession.setPName(json.optString("pname"));
+            profession.setPName(json.optString("pname"));
         profession.setState(json.optInt("state"));
         return profession;
     }
@@ -73,15 +81,59 @@ public class JsonToClass {
      * @param json
      * @return
      */
-    public static Theme JsonToTheme(JSONObject json) {
+    public static Theme JsonToTheme(JSONObject json) throws JSONException {
         Theme mTheme = new Theme();
         mTheme.setId(json.optInt("t_id"));
         mTheme.setFirsttime(new Date(json.optLong("t_date")));
         mTheme.setReplienum(json.optInt("repnum"));
         mTheme.setContent(json.optString("t_content"));
-        mTheme.setUser(JsonToUser(json.optJSONObject("user")));
+        if (json.optJSONObject("user") != null){
+            L.d("user NO NULL");
+            mTheme.setUser(JsonToUser(json.optJSONObject("user")));
+        }
         mTheme.setTitle(json.optString("t_title"));
+        if (json.optJSONArray("firstReply") != null) {
+            JSONArray jsonArray = json.optJSONArray("firstReply");
+            List<Firstreply> list = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Firstreply firstreply = JsonToFirstreply(jsonArray.getJSONObject(i));
+                list.add(firstreply);
+            }
+            mTheme.setFirstreplylies(list);
+        }
+
         return mTheme;
     }
 
+    public static Firstreply JsonToFirstreply(JSONObject json) {
+        Firstreply firstreply = new Firstreply();
+        firstreply.setId(json.optInt("frpid"));
+        firstreply.setContent(json.optString("frpcontent"));
+        firstreply.setTime(new Date(json.optLong("frptime")));
+        firstreply.setType(json.optInt("frptype"));
+        if (json.optJSONObject("frpuser") != null)
+            firstreply.setUser(JsonToUser(json.optJSONObject("frpuser")));
+        if (json.optJSONArray("secondreply") != null) {
+            JSONArray jsonArray = json.optJSONArray("secondreply");
+            List<Secondreply> list = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Secondreply secondreply = JsonToSecondreply(jsonArray.optJSONObject(i));
+                list.add(secondreply);
+            }
+            firstreply.setSecondreplies(list);
+        }
+        return firstreply;
+    }
+
+    public static Secondreply JsonToSecondreply(JSONObject json) {
+        Secondreply secondreply = new Secondreply();
+        secondreply.setId(json.optInt("srpid"));
+        secondreply.setTime(new Date(json.optLong("srptime")));
+        secondreply.setContext(json.optString("srpcontext"));
+        if (json.optJSONObject("srpuser") != null)
+            secondreply.setuser(JsonToUser(json.optJSONObject("srpuser")));
+        if (json.optJSONObject("srpuser_to_id") != null)
+            secondreply.settouser(JsonToUser(json.optJSONObject("srpuser_to_id")));
+        return secondreply;
+    }
 }

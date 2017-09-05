@@ -9,7 +9,9 @@ package com.linzhou.smriti.Data;
  */
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Theme {
 
@@ -21,6 +23,16 @@ public class Theme {
     private Date firsttime;
     private Date lasttime;
     private Integer replienum;
+
+    private List<Firstreply> Firstreplylies = new ArrayList<>();
+
+    public List<Firstreply> getFirstreplylies() {
+        return Firstreplylies;
+    }
+
+    public void setFirstreplylies(List<Firstreply> firstreplylies) {
+        Firstreplylies = firstreplylies;
+    }
 
     public Integer getId() {
         return id;

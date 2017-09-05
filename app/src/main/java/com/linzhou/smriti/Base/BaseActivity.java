@@ -1,11 +1,14 @@
 package com.linzhou.smriti.Base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.Window;
+
+import java.util.List;
 
 
 /*
@@ -18,6 +21,8 @@ import android.view.Window;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

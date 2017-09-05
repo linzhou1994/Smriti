@@ -29,9 +29,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public abstract class MouldAdapter extends BaseAdapter {
 
-    protected itemOnclick mItemOnclick;
-
-    boolean onTouch;
 
 
     //数据源
@@ -42,17 +39,13 @@ public abstract class MouldAdapter extends BaseAdapter {
     protected LayoutInflater inflater;
 
     public MouldAdapter(Context context, List list) {
-        this.mContext = context;
-        this.mList = list;
-        inflater = (LayoutInflater) mContext.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        onTouch = false;
+        this(context,list,false);
     }
 
     public MouldAdapter(Context context, List list, boolean onTouch) {
         this.mContext = context;
         this.mList = list;
         inflater = (LayoutInflater) mContext.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        this.onTouch = onTouch;
     }
 
     public void setmList(List list) {
@@ -60,10 +53,6 @@ public abstract class MouldAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void setonTouch(boolean onTouch) {
-        this.onTouch = onTouch;
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getCount() {
@@ -85,61 +74,63 @@ public abstract class MouldAdapter extends BaseAdapter {
         ViewHolder mViewHolder = null;
         if (convertView == null) {
             convertView = inflater.inflate(setLayout(), null);
-            mViewHolder = setViewHolder(convertView);
+            mViewHolder = setViewHolder(convertView,position);
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
+            updateViewHolder(mViewHolder);
         }
 
-        mViewHolder.bandData(position);
-        if (mItemOnclick != null) {
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mItemOnclick.Onclick(position);
-                }
-            });
+        mViewHolder.bandData(mList.get(position));
 
-            if (onTouch)
-                convertView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        return false;
-                    }
-                });
-
-
-        }
+        mViewHolder.setListener(position);
 
         convertView.setTag(mViewHolder);
 
         return convertView;
     }
 
-    public void setItemOnclick(itemOnclick mOnClickListener) {
-        this.mItemOnclick = mOnClickListener;
-    }
 
-    public void removeItemOnclick() {
-        this.mItemOnclick = null;
-    }
-
+    /**
+     * 设置布局文件
+     *
+     * @return 布局文件
+     */
     protected abstract int setLayout();
 
-    protected abstract ViewHolder setViewHolder(View convertView);
+    /**
+     * 设置viewHolder
+     *
+     * @param convertView
+     * @param position
+     * @return viewHolder
+     */
+    protected abstract ViewHolder setViewHolder(View convertView,int position);
+
+    /**
+     * 更新viewholder的操作函数
+     *
+     * @param viewHolder 需要更新的viewHolder类
+     */
+    protected void updateViewHolder(ViewHolder viewHolder){};
 
 
     static  protected abstract class ViewHolder {
+
         /**
          * 绑定数据
          *
-         * @param position 当前项
          */
-        public abstract void bandData(int position);
+        public abstract void bandData(Object o);
+
+        /**
+         * 设置监听事件
+         *
+         * @param position
+         */
+        public abstract void setListener(int position);
 
     }
 
-    public interface itemOnclick {
-        void Onclick(int i);
-    }
+
 
 }

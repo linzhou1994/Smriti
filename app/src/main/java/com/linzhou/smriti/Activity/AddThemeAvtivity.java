@@ -1,5 +1,6 @@
 package com.linzhou.smriti.Activity;
 
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
@@ -47,7 +48,7 @@ public class AddThemeAvtivity extends BaseActivity implements View.OnClickListen
         , EmojiFragment.OnEmojiClickListener {
 
 
-    private static final String ADD_SUCCESS="Add_success";
+    private static final String ADD_SUCCESS = "Add_success";
 
 
     private EditText add_title;
@@ -78,12 +79,12 @@ public class AddThemeAvtivity extends BaseActivity implements View.OnClickListen
         emoji_layout = (LinearLayout) findViewById(R.id.emoji_layout);
         emoji = (ImageView) findViewById(R.id.emoji);
         back = (ImageView) findViewById(R.id.back);
-        add_bt= (Button) findViewById(R.id.add_bt);
+        add_bt = (Button) findViewById(R.id.add_bt);
 
         mAddDialog = new CustomDialog(this, 0, 0, R.layout.dialog_loding,
                 R.style.Theme_dialog, Gravity.CENTER, R.style.pop_anim_style);
 
-        ((TextView)mAddDialog.findViewById(R.id.loding_text)).setText("正在发送");
+        ((TextView) mAddDialog.findViewById(R.id.loding_text)).setText("正在发送");
 
     }
 
@@ -108,9 +109,6 @@ public class AddThemeAvtivity extends BaseActivity implements View.OnClickListen
         add_content.setOnFocusChangeListener(focusChangeListener);
 
 
-
-
-
         KeyboardChangeListener softKeyboardStateHelper = new KeyboardChangeListener(this);
         softKeyboardStateHelper.setKeyBoardListener(new KeyboardChangeListener.KeyBoardListener() {
             @Override
@@ -124,7 +122,6 @@ public class AddThemeAvtivity extends BaseActivity implements View.OnClickListen
                     L.d("键盘的收起 ");
                     if (!isemoji)
                         emoji.setVisibility(View.GONE);
-                    
                 }
             }
         });
@@ -147,7 +144,9 @@ public class AddThemeAvtivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.add_title:
             case R.id.add_content:
-                hideMultiLayout();
+                isemoji = false;
+                emoji_layout.setVisibility(View.GONE);
+                //hideMultiLayout();
                 break;
             case R.id.back:
                 finish();
@@ -168,18 +167,30 @@ public class AddThemeAvtivity extends BaseActivity implements View.OnClickListen
         String title = add_title.getText().toString().trim();
         String content = add_content.getText().toString().trim();
 
-        if (title.equals(""))
-            Toast.makeText(this,"标题不能为空",Toast.LENGTH_SHORT).show();
-        if (title.length()>100)
-            Toast.makeText(this,"标题长度不能超过100",Toast.LENGTH_SHORT).show();
-        if (content.equals(""))
-            Toast.makeText(this,"内容不能为空",Toast.LENGTH_SHORT).show();
-        if (content.length()>200)
-            Toast.makeText(this,"内容长度不能超过100",Toast.LENGTH_SHORT).show();
+        if (title.equals("")) {
+            Toast.makeText(this, "标题不能为空", Toast.LENGTH_SHORT).show();
+            mAddDialog.dismiss();
+            return;
+        }
+        if (title.length() > 100) {
+            Toast.makeText(this, "标题长度不能超过100", Toast.LENGTH_SHORT).show();
+            mAddDialog.dismiss();
+            return;
+        }
+        if (content.equals("")) {
+            Toast.makeText(this, "内容不能为空", Toast.LENGTH_SHORT).show();
+            mAddDialog.dismiss();
+            return;
+        }
+        if (content.length() > 200) {
+            Toast.makeText(this, "内容长度不能超过100", Toast.LENGTH_SHORT).show();
+            mAddDialog.dismiss();
+            return;
+        }
 
         RequestBody addThemebody = new FormBody.Builder()
                 .add("title", title)
-                .add("content",content)
+                .add("content", content)
                 .build();
 
         OkHttp.asynpost(Url.ADDTHEME, addThemebody, new OkHttp.OkHttpListener() {
@@ -218,7 +229,6 @@ public class AddThemeAvtivity extends BaseActivity implements View.OnClickListen
                 });
             }
         });
-
 
 
     }
@@ -298,18 +308,36 @@ public class AddThemeAvtivity extends BaseActivity implements View.OnClickListen
     }
 
 
-
     View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
-                hideMultiLayout();
-            } else {
-                hideMultiLayout();
-            }
+            isemoji = false;
+            emoji_layout.setVisibility(View.GONE);
+//            if (hasFocus) {
+//                hideMultiLayout();
+//            } else {
+//                hideMultiLayout();
+//            }
 
         }
     };
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //隐藏键盘
+        showMultiLayout();
+        isemoji = false;
+        emoji_layout.setVisibility(View.GONE);
+    }
 
+    @Override
+    protected void onDestroy() {
+        //隐藏键盘
+//        KeyboardUtils.updateSoftInputMethod(this, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+//        KeyboardUtils.hideKeyboard(getCurrentFocus());
+//        isemoji = false;
+//        emoji_layout.setVisibility(View.GONE);
+        super.onDestroy();
+    }
 }

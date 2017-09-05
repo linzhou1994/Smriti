@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.linzhou.smriti.Adapter.CommunityApdater;
+import com.linzhou.smriti.Adapter.ItemOnClick;
 import com.linzhou.smriti.Base.BaseActivity;
 import com.linzhou.smriti.Base.MouldAdapter;
 import com.linzhou.smriti.Base.StaticClass;
@@ -103,7 +104,7 @@ public class ThemeSearchActivity extends TouchFinishActivity implements View.OnC
         back.setOnClickListener(this);
         search.setOnClickListener(this);
 
-        mApdater.setItemOnclick(new MouldAdapter.itemOnclick() {
+        mApdater.setItemOnclick(new ItemOnClick() {
             @Override
             public void Onclick(int i) {
                 Toast.makeText(ThemeSearchActivity.this
@@ -181,7 +182,7 @@ public class ThemeSearchActivity extends TouchFinishActivity implements View.OnC
         });
     }
 
-    private void getThemes(JSONArray jsonArray) {
+    private void getThemes(JSONArray jsonArray) throws JSONException {
         mThemes.clear();
 
         for (int i = 0; i < jsonArray.length(); i++)

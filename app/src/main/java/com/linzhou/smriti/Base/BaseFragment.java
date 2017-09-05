@@ -1,5 +1,6 @@
 package com.linzhou.smriti.Base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,8 +22,9 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(getlayoutId(),container,false);
         initView(view);
-        initData();
         setListener();
+        initData();
+
         return view;
     }
 
@@ -46,4 +48,15 @@ public abstract class BaseFragment extends Fragment {
      * 设置监听事件
      */
     protected abstract void setListener();
+
+    /**
+     * 含有Bundle通过Class跳转界面
+     **/
+    public void startActivity(Class<?> cls, Bundle bundle) {
+        Intent intent = new Intent(getActivity(), cls);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
+    }
 }

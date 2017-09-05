@@ -1,6 +1,7 @@
 package com.linzhou.smriti.fragment;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,8 +11,10 @@ import android.widget.Toast;
 
 import com.linzhou.smriti.Activity.AddThemeAvtivity;
 import com.linzhou.smriti.Activity.LoginActivity;
+import com.linzhou.smriti.Activity.ThemeDetailActivity;
 import com.linzhou.smriti.Activity.ThemeSearchActivity;
 import com.linzhou.smriti.Adapter.CommunityApdater;
+import com.linzhou.smriti.Adapter.ItemOnClick;
 import com.linzhou.smriti.Base.AppConfig;
 import com.linzhou.smriti.Base.BaseFragment;
 import com.linzhou.smriti.Base.MouldAdapter;
@@ -55,7 +58,7 @@ public class CommunityFragment extends BaseFragment implements View.OnClickListe
     private CommunityApdater mApdater;
     private SwipeRefreshLayout mSwipeRefresh;
     private ImageView search;
-    private ImageView addtheme;
+    private FloatingActionButton addtheme;
 
     private List<Theme> mThemes = null;
 
@@ -79,7 +82,7 @@ public class CommunityFragment extends BaseFragment implements View.OnClickListe
         tv_profession= (TextView) view.findViewById(R.id.tv_profession);
         mListView= (ListView) view.findViewById(R.id.elist);
         search = (ImageView) view.findViewById(R.id.search);
-        addtheme = (ImageView) view.findViewById(R.id.addtheme);
+        addtheme = (FloatingActionButton) view.findViewById(R.id.addtheme);
 
         tv_profession.setText(AppConfig.mUser.getProfession().getPName());
         mThemes = new ArrayList<>();
@@ -105,10 +108,12 @@ public class CommunityFragment extends BaseFragment implements View.OnClickListe
         search.setOnClickListener(this);
         addtheme.setOnClickListener(this);
 
-        mApdater.setItemOnclick(new MouldAdapter.itemOnclick() {
+        mApdater.setItemOnclick(new ItemOnClick() {
             @Override
             public void Onclick(int i) {
-                Toast.makeText(getActivity(),"点击了："+i,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), ThemeDetailActivity.class);
+                intent.putExtra("tid",mThemes.get(i).getId());
+                startActivity(intent);
             }
         });
 
@@ -171,7 +176,7 @@ public class CommunityFragment extends BaseFragment implements View.OnClickListe
         });
     }
 
-    private void getThemes(JSONArray jsonArray) {
+    private void getThemes(JSONArray jsonArray) throws JSONException {
         mThemes.clear();
 
         for (int i =0;i<jsonArray.length();i++)

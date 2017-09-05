@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <attr name="progress_lineheight" format="dimension"></attr>
+    <attr name="progress_textsize" format="dimension"></attr>
+    <attr name="progress_finishlinecolor" format="color"></attr>
+    <attr name="progress_unfinishlinecolor" format="color"></attr>
+    <attr name="progress_textcolort" format="color"></attr>
+    <attr name="progress" format="float"></attr>
+
+    <declare-styleable name="MyProgress">
+        <attr name="progress_lineheight" ></attr>
+        <attr name="progress_textsize" ></attr>
+        <attr name="progress_finishlinecolor" ></attr>
+        <attr name="progress_unfinishlinecolor" ></attr>
+        <attr name="progress_textcolort"></attr>
+        <attr name="progress"></attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="PraiseListView">
+        <attr name="item_color" format="color"/>
+        <attr name="item_selector_color" format="color"/>
+    </declare-styleable>
+</resources>

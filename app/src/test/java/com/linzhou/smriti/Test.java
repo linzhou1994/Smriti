@@ -24,9 +24,12 @@ import okhttp3.RequestBody;
 public class Test {
     @org.junit.Test
     public void addition_isCorrect() throws Exception {
-        String str = "asdf";
-        switch (str){
-            case "as":
-        }
+
+
+        Date s = null;
+
+        String str = "asdf"+ (s==null?"null":"nonull");
+        System.out.print(str);
+
     }
 }

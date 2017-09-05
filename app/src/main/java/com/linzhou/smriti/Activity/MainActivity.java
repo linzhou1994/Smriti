@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.linzhou.smriti.Base.BaseWebSocketActivity;
 import com.linzhou.smriti.R;
+import com.linzhou.smriti.View.CustomDialog;
 import com.linzhou.smriti.fragment.CommunityFragment;
 import com.linzhou.smriti.fragment.MessageFragment;
 import com.linzhou.smriti.fragment.MyFragment;
@@ -32,6 +33,8 @@ public class MainActivity extends BaseWebSocketActivity implements View.OnClickL
     private Fragment mCommunity;
     private Fragment mMessage;
     private Fragment mMy;
+
+
 
     @Override
     protected int getlayout() {

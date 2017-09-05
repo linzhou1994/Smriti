@@ -24,6 +24,15 @@ public class Url {
     public static final String HTTP_USER_HEAD_URL = "http://" + IP+"/";
 
     public static final String SEARCH_THEME = BASEURL+"/searchThemes";
+
     public static final String ADDTHEME = BASEURL+"/addTheme";
+
+    public static final String GETTHEME = BASEURL+"/getTheme";
+
+    public static final String ADD_FRIST_REPLY = BASEURL + "/t_addFirstReply";
+
+    public static final String ADD_SECOND_REPLY = BASEURL + "/t_addSecondReply";
+
+    public static final String C_GETCONVERSATIONS = BASEURL + "/c_getConversations";
 
 }

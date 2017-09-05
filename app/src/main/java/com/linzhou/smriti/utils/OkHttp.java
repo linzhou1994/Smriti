@@ -46,7 +46,7 @@ public class OkHttp {
      * @param okHttpListener 监听回调
      * @throws IOException
      */
-    public static void get(String url, OkHttpListener okHttpListener) throws IOException {
+    public static void get(String url, OkHttpListener okHttpListener) throws IOException, JSONException {
 
         Request.Builder builder = new Request.Builder().url(url);
         setHeader(builder);
@@ -90,7 +90,9 @@ public class OkHttp {
             public void onResponse(Call call, Response response) throws IOException {
                 setCOOKIE(response);
                 if (okHttpListener != null) {
-                    okHttpListener.success(response.body().string());
+
+                        okHttpListener.success(response.body().string());
+
                 }
             }
 

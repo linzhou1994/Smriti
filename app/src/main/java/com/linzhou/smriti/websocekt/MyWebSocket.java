@@ -27,8 +27,8 @@ import de.tavendo.autobahn.WebSocketHandler;
 import de.tavendo.autobahn.WebSocketOptions;
 
 /*
- *项目名： Schentunion
- *包名：   com.linzhou.schentunion.application
+ *项目名： Smriti
+ *包名：   com.linzhou.Smriti.websocekt
  *创建者:  linzhou
  *创建时间:17/04/20
  *描述:   WebSocket功能封装
